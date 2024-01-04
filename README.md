@@ -1,0 +1,1 @@
+This is a blog template downloaded from "startbootstrap.com" called 'Clean Blog'.
