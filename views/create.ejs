@@ -32,7 +32,7 @@
                             <!-- To make this form functional, sign up at-->
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
-                            <form id="contactForm" data-sb-form-api-token="API_TOKEN" action="/posts/store" method="POST">
+                            <form id="contactForm" data-sb-form-api-token="API_TOKEN" action="/posts/store" method="POST" encType="multipart/form-data">
                                 <div class="form-floating">
                                     <input class="form-control" id="title" name="title" type="text" placeholder="Title"  data-sb-validations="required" />
                                     <label>Title</label>
@@ -42,6 +42,10 @@
                                     <textarea class="form-control" id="body" name="body" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></textarea>
                                     <label>Description</label>
                                     <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <label>Image</label>
+                                    <input type="file" class="form-control" name="image" id="image">
                                 </div>
                                 <br />
                                 <!-- Submit success message-->

@@ -1,10 +1,15 @@
 const express = require('express');
-const path = require('path');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 
-const BlogPost = require('./models/BlogPost');
+const newPostController = require('./controllers/newPost');
+const homeController = require('./controllers/home');
+const storePostController = require('./controllers/storePost');
+const getPostController = require('./controllers/getPost');
+
+const validateMiddleWare = require('./middleware/validationMiddleware');
 
 const app = new express();
 const port = 4000;
@@ -15,42 +20,27 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 
-app.get('/', async (req, res) => {
-    const blogposts = await BlogPost.find({});
-    console.log(blogposts);
-    res.render("index", {
-        blogposts
-    });
-})
+//  app.use('/posts/store', validateMiddleWare);
 
-app.get('/about', (req, res) => {
-    // res.sendFile(path.resolve(__dirname, 'pages/about.html'));
-    res.render("about");
-})
+app.get('/', homeController)
 
-app.get('/contact', (req, res) => {
-    // res.sendFile(path.resolve(__dirname, 'pages/contact.html'));
-    res.render("contact");
-})
+// app.get('/about', (req, res) => {
+//     res.render("about");
+// })
 
-app.get('/post/:id', async (req, res) => {
-    const blogpost = await BlogPost.findById(req.params.id);
-    res.render("post", {
-        blogpost
-    });
-})
+// app.get('/contact', (req, res) => {
+//     res.render("contact");
+// })
 
-app.get('/posts/new', (req, res) => {
-    res.render("create");
-})
+app.get('/post/:id', getPostController)
 
-app.post('/posts/store', async (req, res) => {
-    console.log('req.body::', req.body);
-    await BlogPost.create(req.body);
-    res.redirect('/');
-})
+app.get('/posts/new', newPostController);
+
+// Handler below if for posting new POST through form
+app.post('/posts/store', validateMiddleWare, storePostController)
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
