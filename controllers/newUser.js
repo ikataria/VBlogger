@@ -15,5 +15,4 @@ module.exports = (req, res) => {
         // errors: req.session.validationErrors
     });
 
-    // console.log('>>>>>>:::->', req.flash('data'));
 }
